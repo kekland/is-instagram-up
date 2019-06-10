@@ -3,3 +3,4 @@ data/token.json
 api.log
 longpoll.log
 /database/
+.vscode/
