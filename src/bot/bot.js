@@ -8,6 +8,8 @@ let bot = null
 const init = async () => {
   utils.log('Starting the bot')
 
+  await handler.init()
+
   bot = new VK(token)
   
   bot.longpoll.start();
