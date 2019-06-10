@@ -9,7 +9,7 @@ const init = async () => {
 
   db = levelup(leveldown('./database/'))
 
-  utils.log('Database started')
+  utils.log('Database started', utils.color.green)
 }
 module.exports.main = db
 module.exports.init = init

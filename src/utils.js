@@ -19,7 +19,7 @@ const getStatusFormatted = (status) => {
   }
 }
 
-module.exports.chalk = chalk
+module.exports.color = chalk
 module.exports.moment = moment
 module.exports.getTimeFormatted = getTimeFormatted
 module.exports.getStatusFormatted = getStatusFormatted
