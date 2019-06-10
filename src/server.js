@@ -1,5 +1,6 @@
 const utils = require('./utils')
 const connectivity = require('./connectivity')
+const database = require('./database/database')
 
 const checkConnection = async () => {
   console.log(`${utils.getTimeFormatted()} Checking services:`)
@@ -10,8 +11,7 @@ const checkConnection = async () => {
 }
 
 const bootstrap = async () => {
-  checkConnection()
-  setInterval(checkConnection, 60000)
+  database.init()
 }
 
 bootstrap()
