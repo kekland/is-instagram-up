@@ -1,7 +1,7 @@
 const axios = require('axios').default
-const servicesToConnect = require("serviesToConnect.json")
+const servicesToConnect = require("services.json")
 
-const checkService = async (key, service) => {
+const getServiceStatus = async (key, service) => {
   try {
     const response = await axios.get(service.url)
     return {service: key, up: true}
@@ -11,10 +11,10 @@ const checkService = async (key, service) => {
   }
 }
 
-const checkServices = async () => {
+const getStatusOfAllServices = async () => {
   const promises = []
   for(const key in servicesToConnect.services) {
-    promises.push(checkService(key, servicesToConnect[key]))
+    promises.push(getServiceStatus(key, servicesToConnect[key]))
   }
 
   const data = await Promise.all(promises)
@@ -26,5 +26,6 @@ const checkServices = async () => {
   return results
 }
 
-module.exports.checkService = checkService
-module.exports.checkServices = checkServices
+module.exports.checkService = getServiceStatus
+module.exports.checkServices = getStatusOfAllServices
+module.exports.services = services

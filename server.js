@@ -2,13 +2,10 @@ const utils = require('./utils')
 const connectivity = require('./connectivity')
 
 const checkConnection = async () => {
-  process.stdout.write(`${getTimeFormatted()} Connecting to Instagram: `)
-  const connected = await tryConnectToInstagram()
-  if (connected) {
-    process.stdout.write(chalk.green('connected\n'))
-  }
-  else {
-    process.stdout.write(chalk.red('failed\n'))
+  process.stdout.write(`${getTimeFormatted()} Checking services: \n`)
+  const status = getStatusOfAllServices
+  for(const key in status) {
+    
   }
 }
 
