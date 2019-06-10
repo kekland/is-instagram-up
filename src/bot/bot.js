@@ -1,17 +1,30 @@
 const VK = require('vk-fast-longpoll')
 const handler = require('./handler')
 const utils = require('../utils')
+const connectivity = require('../connectivity')
 
 const token = require('../../data/token.json').token
 let bot = null
 
+let status = {}
+
+
+const getStatus = async () => {
+  status = await connectivity.checkServices()
+}
+
+const initGetStatus = () => {
+  getStatus()
+  setInterval(() => getStatus, 25000)
+}
+
 const init = async () => {
   utils.log('Starting the bot')
 
-  await handler.init()
+  await handler.init(() => status)
+  initGetStatus()
 
   bot = new VK(token)
-  
   bot.longpoll.start();
 
   bot.longpoll.on('message', (message) => {

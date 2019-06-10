@@ -1,34 +1,42 @@
 {
-  "subscribeKeyboard": [
-    [
-      {
-        "action": {
-          "type": "text",
-          "payload": "{\"button\": \"1\"}",
-          "label": "Подписаться"
-        },
-        "color": "primary"
-      }
+  "subscribeKeyboard": {
+    "one_time": false,
+    "buttons": [
+      [
+        {
+          "action": {
+            "type": "text",
+            "payload": "{\"button\": \"1\"}",
+            "label": "Подписаться"
+          },
+          "color": "primary"
+        }
+      ]
     ]
-  ],
-  "subscribedKeyboard": [
-    [
-      {
-        "action": {
-          "type": "text",
-          "payload": "{\"button\": \"1\"}",
-          "label": "Статус сервисов"
-        },
-        "color": "primary"
-      },
-      {
-        "action": {
-          "type": "text",
-          "payload": "{\"button\": \"2\"}",
-          "label": "Отписаться"
-        },
-        "color": "negative"
-      }
+  },
+  "subscribedKeyboard": {
+    "one_time": false,
+    "buttons": [
+      [
+        {
+          "action": {
+            "type": "text",
+            "payload": "{\"button\": \"1\"}",
+            "label": "Статус сервисов"
+          },
+          "color": "primary"
+        }
+      ],
+      [
+        {
+          "action": {
+            "type": "text",
+            "payload": "{\"button\": \"2\"}",
+            "label": "Отписаться"
+          },
+          "color": "negative"
+        }
+      ]
     ]
-  ]
+  }
 }

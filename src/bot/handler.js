@@ -3,7 +3,9 @@ const keyboards = require('./keyboards.json')
 
 const db = require('../database/database')
 const utils = require('../utils')
+const services = require('../../data/services.json')
 
+let getStatus = null
 const logMessage = (message) => {
   utils.log(`Message from ${message.sender}: `, utils.color.blue)
   utils.log(`\t${utils.color.gray('body')}: ${message.text}`, utils.color.reset)
@@ -45,6 +47,7 @@ const handleMessage = async (bot, message) => {
 
       const userExists = await userExistsInDatabase(id)
       if (userExists) {
+        console.log(keyboards.subscribedKeyboard)
         bot.api.messages.send({ user_id: message.sender, message: responses.onAlreadySubscribed, keyboard: keyboards.subscribedKeyboard })
         logResponse('onAlreadySubscribed', utils.color.yellow)
       }
@@ -70,8 +73,14 @@ const handleMessage = async (bot, message) => {
         logResponse('onAlreadyUnsubscribed', utils.color.yellow)
       }
     }
-    else if (text === '/status') {
-
+    else if (text === '/status' || text === 'статус сервисов') {
+      let statusMessage = 'Вот, что сейчас с интернетом: \n'
+      const status = getStatus()
+      for(const key in status) {
+        statusMessage += `${services[key].nameLocalized.ru}: ${(status[key]? '✔' : '✖')}\n`
+      }
+      bot.api.messages.send({ user_id: message.sender, message: statusMessage })
+      logResponse('status')
     }
     else {
       bot.api.messages.send({ user_id: message.sender, message: responses.unknown })
@@ -86,8 +95,9 @@ const handleMessage = async (bot, message) => {
   }
 }
 
-const init = async () => {
+const init = async (_getStatus) => {
   await db.init()
+  getStatus = _getStatus
 }
 
 module.exports.handleMessage = handleMessage
