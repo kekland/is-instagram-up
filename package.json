@@ -1,0 +1,26 @@
+{
+  "name": "is-instagram-up",
+  "version": "0.0.0",
+  "description": "Is Instagram up? - a common question in Kazakhstan",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kekland/is-instagram-up.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "kekland <kk.erzhan@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kekland/is-instagram-up/issues"
+  },
+  "homepage": "https://github.com/kekland/is-instagram-up#readme",
+  "dependencies": {
+    "axios": "^0.19.0"
+  }
+}
