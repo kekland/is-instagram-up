@@ -1,5 +1,6 @@
 {
-  "welcoming": "Привет. Хочешь узнавать, когда блокируются Инстаграм, Телеграм, или другие соц.сети? Подписывайся на паблик и напиши мне /subscribe, и я буду тебя оповещать.",
-  "onSubscribed": "onSubscribed",
-  "onUnsubscribed": "onUnsubscribed"
+  "welcome": "Привет. Хочешь узнавать, когда блокируются Инстаграм, Телеграм, или другие соц.сети? Подписывайся на паблик и напиши мне /subscribe, и я буду тебя оповещать.",
+  "onSubscribe": "onSubscribed",
+  "onUnsubscribe": "onUnsubscribed",
+  "unknown": "лол"
 }

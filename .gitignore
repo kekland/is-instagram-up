@@ -1,4 +1,5 @@
 node_modules
 data/token.json
 api.log
+longpoll.log
 /database/
