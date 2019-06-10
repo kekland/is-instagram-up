@@ -1,4 +1,6 @@
 const responses = require('./responses.json')
+const keyboards = require('./keyboards.json')
+
 const db = require('../database/database')
 const utils = require('../utils')
 
@@ -38,24 +40,35 @@ const handleMessage = async (bot, message) => {
       bot.api.messages.send({ user_id: message.sender, message: responses.welcome })
       logResponse('welcome')
     }
-    else if (text === '/subscribe') {
+    else if (text === '/subscribe' || text === 'подписаться') {
       const id = message.sender
 
       const userExists = await userExistsInDatabase(id)
       if (userExists) {
-        bot.api.messages.send({ user_id: message.sender, message: responses.onAlreadySubscribed })
-        logResponse('onAlreadySubscribed')
+        bot.api.messages.send({ user_id: message.sender, message: responses.onAlreadySubscribed, keyboard: keyboards.subscribedKeyboard })
+        logResponse('onAlreadySubscribed', utils.color.yellow)
       }
       else {
         await addUserToDatabase(id)
 
-        bot.api.messages.send({ user_id: message.sender, message: responses.onSubscribe })
+        bot.api.messages.send({ user_id: message.sender, message: responses.onSubscribe, keyboard: keyboards.subscribedKeyboard })
         logResponse('onSubscribe')
       }
     }
-    else if (text === '/unsubscribe') {
-      bot.api.messages.send({ user_id: message.sender, message: responses.onUnsubscribe })
-      logResponse('onUnsubscribe')
+    else if (text === '/unsubscribe' || text === 'отписаться') {
+      const id = message.sender
+
+      const userExists = await userExistsInDatabase(id)
+      if (userExists) {
+        await deleteUserFromDatabase(id)
+
+        bot.api.messages.send({ user_id: message.sender, message: responses.onUnsubscribe, keyboard: keyboards.subscribeKeyboard })
+        logResponse('onUnsubscribe')
+      }
+      else {
+        bot.api.messages.send({ user_id: message.sender, message: responses.onAlreadyUnsubscribed, keyboard: keyboards.subscribeKeyboard })
+        logResponse('onAlreadyUnsubscribed', utils.color.yellow)
+      }
     }
     else if (text === '/status') {
 
