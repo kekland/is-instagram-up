@@ -1,5 +1,5 @@
 const axios = require('axios').default
-const services = require('./services.json')
+const services = require('../data/services.json')
 
 const getServiceStatus = async (key, service) => {
   try {
