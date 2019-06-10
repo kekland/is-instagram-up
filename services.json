@@ -1,36 +1,34 @@
 {
-  "services": {
-    "instagram": {
-      "name": "instagram",
-      "nameLocalized": {
-        "ru": "Инстаграм",
-        "en": "Instagram"
-      },
-      "url": "https://instagram.com"
+  "instagram": {
+    "name": "instagram",
+    "nameLocalized": {
+      "ru": "Инстаграм",
+      "en": "Instagram"
     },
-    "telegram": {
-      "name": "telegram",
-      "nameLocalized": {
-        "ru": "Телеграм",
-        "en": "Telegram"
-      },
-      "url": "https://telegram.org"
+    "url": "https://instagram.com"
+  },
+  "telegram": {
+    "name": "telegram",
+    "nameLocalized": {
+      "ru": "Телеграм",
+      "en": "Telegram"
     },
-    "youtube": {
-      "name": "youtube",
-      "nameLocalized": {
-        "ru": "Ютуб",
-        "en": "YouTube"
-      },
-      "url": "https://youtube.com"
+    "url": "https://telegram.org"
+  },
+  "youtube": {
+    "name": "youtube",
+    "nameLocalized": {
+      "ru": "Ютуб",
+      "en": "YouTube"
     },
-    "facebook": {
-      "name": "facebook",
-      "nameLocalized": {
-        "ru": "Фейсбук",
-        "en": "Facebook"
-      },
-      "url": "https://facebook.com"
-    }
+    "url": "https://youtube.com"
+  },
+  "facebook": {
+    "name": "facebook",
+    "nameLocalized": {
+      "ru": "Фейсбук",
+      "en": "Facebook"
+    },
+    "url": "https://facebook.com"
   }
 }

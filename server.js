@@ -2,15 +2,15 @@ const utils = require('./utils')
 const connectivity = require('./connectivity')
 
 const checkConnection = async () => {
-  process.stdout.write(`${getTimeFormatted()} Checking services: \n`)
-  const status = getStatusOfAllServices
+  console.log(`${utils.getTimeFormatted()} Checking services:`)
+  const status = await connectivity.checkServices()
   for(const key in status) {
-    
+    console.log(`\t${key}: ${utils.getStatusFormatted(status[key])}`)
   }
 }
 
 const bootstrap = async () => {
-  setInterval(checkConnection, 3000)
+  setInterval(checkConnection, 60000)
 }
 
 bootstrap()
