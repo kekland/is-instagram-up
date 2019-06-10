@@ -3,7 +3,7 @@ const services = require('../data/services.json')
 
 const getServiceStatus = async (key, service) => {
   try {
-    const response = await axios.get(service.url, {timeout: 3000,})
+    const response = await axios.get(service.url, {timeout: 8000,})
     return { service: key, up: true }
   }
   catch (e) {

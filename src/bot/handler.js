@@ -47,7 +47,6 @@ const handleMessage = async (bot, message) => {
 
       const userExists = await userExistsInDatabase(id)
       if (userExists) {
-        console.log(keyboards.subscribedKeyboard)
         bot.api.messages.send({ user_id: message.sender, message: responses.onAlreadySubscribed, keyboard: keyboards.subscribedKeyboard })
         logResponse('onAlreadySubscribed', utils.color.yellow)
       }

@@ -11,11 +11,15 @@ let status = {}
 
 const getStatus = async () => {
   status = await connectivity.checkServices()
+  utils.log('status: ')
+  for(const key in status) {
+    utils.log(`\t${utils.color.gray(key)}: ${utils.getStatusFormatted(status[key])}`)
+  }
 }
 
 const initGetStatus = () => {
   getStatus()
-  setInterval(() => getStatus, 25000)
+  setInterval(() => getStatus(), 15000)
 }
 
 const init = async () => {
