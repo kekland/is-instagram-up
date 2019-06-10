@@ -10,6 +10,7 @@ const checkConnection = async () => {
 }
 
 const bootstrap = async () => {
+  checkConnection()
   setInterval(checkConnection, 60000)
 }
 
