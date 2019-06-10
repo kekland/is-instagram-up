@@ -6,6 +6,9 @@ It is now a common practice in **Kazakhstan** to block *Instagram*, *Telegram*, 
 
 This is actually a **huge issue** in **Kazakhstan** and I hope that this bot/app will raise awareness in the youth about **Net Neutrality**.
 
+# Try it out!
+[Link in VK](https://vk.com/internetrabotaet?)
+
 # Launching
 
 ```bash
