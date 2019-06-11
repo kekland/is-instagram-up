@@ -81,7 +81,7 @@ const handleMessage = async (message) => {
     const text = message.text.toLowerCase()
     logMessage(message)
 
-    if (text === 'start') {
+    if (text === 'start' || text === 'начать') {
       bot.api.messages.send({ user_id: message.sender, message: responses.welcome })
       logResponse('welcome')
     }
