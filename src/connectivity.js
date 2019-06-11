@@ -3,7 +3,7 @@ const services = require('../data/services.json')
 
 const getServiceStatus = async (key, service) => {
   try {
-    const response = await axios.get(service.url, {timeout: 60000,})
+    const response = await axios.get(service.url, {timeout: 10000,})
     return { service: key, up: true }
   }
   catch (e) {
@@ -12,15 +12,9 @@ const getServiceStatus = async (key, service) => {
 }
 
 const getStatusOfAllServices = async () => {
-  const promises = []
-  for (const key in services) {
-    promises.push(getServiceStatus(key, services[key]))
-  }
-
-
-  const data = await Promise.all(promises)
   const results = {}
-  for (const result of data) {
+  for (const key in services) {
+    const result = await getServiceStatus(key, services[key]);
     results[result.service] = result.up
   }
 
