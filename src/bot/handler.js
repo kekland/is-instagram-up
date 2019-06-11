@@ -160,7 +160,7 @@ const init = async (_getStatus, _bot) => {
   setInterval(async () => {
     const subs = await getSubscribersList()
     utils.log(`Subscriber count: ${utils.color.green(subs.length)}`)
-  }, 1000)
+  }, 60 * 1000)
 }
 
 module.exports.handleMessage = handleMessage
