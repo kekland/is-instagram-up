@@ -17,13 +17,18 @@ const logResponse = (responseType, color = utils.color.green) => {
 }
 
 const getSubscribersList = async () => {
-  let data = await db.main.get('subscribers')
-  let list = JSON.parse(data)
-  return list
+  try {
+    let data = await db.main.get('subscribers')
+    let list = JSON.parse(data)
+    return list
+  }
+  catch (e) {
+    return []
+  }
 }
 
 const statusEmoji = (status) => {
-  return (status)? '✅' : '❌'
+  return (status) ? '✅' : '❌'
 }
 
 const addUserToDatabase = async (id) => {
@@ -135,13 +140,13 @@ const handleMessage = async (message) => {
 const onStatusChange = async (difference) => {
   const subscribers = await getSubscribersList()
   let message = "Ой, ой - что-то поменялось: \n"
-  for(const key in difference) {
+  for (const key in difference) {
     const status = difference[key]
     message += `${services[key].nameLocalized.ru}: ${statusEmoji(status.from)} ⮕ ${statusEmoji(status.now)}\n`
   }
   utils.log(`Status change: sending for ${subscribers.length}`)
   logResponse('statusChange', utils.color.blue)
-  for(const subscriber of subscribers) {
+  for (const subscriber of subscribers) {
     bot.api.messages.send({ user_id: subscriber, message: message })
     await utils.awaitFor(100)
   }
