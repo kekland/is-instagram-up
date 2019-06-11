@@ -172,3 +172,4 @@ module.exports.handleMessage = handleMessage
 module.exports.init = init
 module.exports.checkConnectionFailure = checkConnectionFailure
 module.exports.onStatusChange = onStatusChange
+module.exports.getSubscribersList = getSubscribersList

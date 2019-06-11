@@ -26,14 +26,17 @@ const compareStatuses = () => {
 }
 
 const saveInHistory = async (status) => {
-  let index = 0
+  let data = []
   try {
-    index = await db.main.get("history_index")
-  } catch(e) {}
-  await db.main.put(`history_${index}`, {timestamp: moment().unix(), data: status})
-  await db.main.put(`history_index`, index + 1)
-  
-  utils.log(`History index: ${index + 1}`, utils.color.gray)
+    data = JSON.parse(await db.main.get("history"))
+  } catch (e) { }
+  if (data.length >= 480) {
+    data.splice(0)
+  }
+  data.push({ timestamp: moment().unix(), data: status })
+  await db.main.put("history", JSON.stringify(data))
+
+  utils.log(`History index: ${data.length}`, utils.color.gray)
 }
 
 const getStatus = async (onStatusChange) => {
@@ -43,7 +46,7 @@ const getStatus = async (onStatusChange) => {
   await saveInHistory(status)
 
   const difference = compareStatuses()
-  if(Object.keys(difference).length > 0) {
+  if (Object.keys(difference).length > 0) {
     utils.log('difference:')
     utils.log(`\t${JSON.stringify(difference)}`, utils.color.green)
     onStatusChange(difference)
@@ -75,7 +78,7 @@ const init = async () => {
     }
   });
 
-  if(process.argv.length > 2 & process.argv[2] === 'test') {
+  if (process.argv.length > 2 & process.argv[2] === 'test') {
     utils.log("Test commencing in 10 seconds")
     setTimeout(() => {
       utils.log("Test running")
@@ -89,3 +92,19 @@ const init = async () => {
 
 module.exports.bot = bot
 module.exports.init = init
+module.exports.serverGetStatus = async () => {
+  return status
+}
+module.exports.serverGetHistory = async () => {
+  try {
+    const history = await db.main.get('history')
+    return history
+  }
+  catch (e) {
+    return []
+  }
+}
+module.exports.serverGetSubscriberCount = async () => {
+  const data = await handler.getSubscribersList()
+  return data.length
+}
