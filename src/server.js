@@ -19,7 +19,7 @@ const bootstrap = async () => {
   
   app.get('/subscribers', async (req, res) => {
     const count = await bot.serverGetSubscriberCount()
-    res.send(count)
+    res.send({count})
   })
 
   app.listen(8080)
