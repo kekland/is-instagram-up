@@ -29,13 +29,15 @@ const getStatus = async (onStatusChange) => {
 
   const difference = compareStatuses()
   if(Object.keys(difference).length > 0) {
+    utils.log('difference:')
+    utils.log(`\t${JSON.stringify(difference)}`, utils.color.green)
     onStatusChange(difference)
   }
 
-  utils.log('status: ')
+  /*utils.log('status: ')
   for (const key in status) {
     utils.log(`\t${utils.color.gray(key)}: ${utils.getStatusFormatted(status[key])}`)
-  }
+  }*/
 }
 
 const initGetStatus = () => {
