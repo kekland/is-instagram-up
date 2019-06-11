@@ -115,7 +115,7 @@ const handleMessage = async (message) => {
         logResponse('onAlreadyUnsubscribed', utils.color.yellow)
       }
     }
-    else if (text === '/status' || text === 'статус сервисов' || text === 'статус') {
+    else if (text === '/status' || text === 'статус сервисов' || text === 'статус' || text === 'status') {
       let statusMessage = ''
       const status = getStatus()
       for (const key in status) {
