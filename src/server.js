@@ -1,11 +1,14 @@
 const utils = require('./utils')
 const connectivity = require('./connectivity')
 const bot = require('./bot/bot')
+const cors = require('cors')
 const express = require('express')
 
 const bootstrap = async () => {
   await bot.init()
   const app = express()
+
+  app.use(cors())
 
   app.get('/status', async (req, res) => {
     const status = await bot.serverGetStatus()
