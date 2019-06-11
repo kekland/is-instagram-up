@@ -16,7 +16,7 @@ const bootstrap = async () => {
   })
 
   app.get('/history', async (req, res) => {
-    let history = await bot.serverGetHistory()
+    let history = JSON.parse(await bot.serverGetHistory())
     if(history.length > 60) {
       history = history.slice(history.length - 60)
     }
