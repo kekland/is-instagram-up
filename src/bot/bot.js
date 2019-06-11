@@ -95,6 +95,14 @@ const init = async () => {
       handler.checkConnectionFailure()
     }, 10000)
   }
+  
+  if (process.argv.length > 3 & process.argv[2] === 'broadcast') {
+    utils.log(`Broadcast: ${process.argv[3]} commencing in 10 seconds`)
+    setTimeout(() => {
+      utils.log("Broadcast running")
+      handler.broadcast(process.argv[3])
+    }, 10000)
+  }
 
   await handler.init(() => status, bot, db)
   utils.log('Bot started', utils.color.green)

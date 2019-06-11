@@ -157,6 +157,14 @@ const checkConnectionFailure = () => {
   onStatusChange({"telegram": {"name": "telegram", from: false, now: true}}, true)
 }
 
+const broadcast = async (message) => {
+  const subscribers = await getSubscribersList()
+  for (const subscriber of subscribers) {
+    bot.api.messages.send({ user_id: subscriber, message: message })
+    await utils.awaitFor(1000)
+  }
+}
+
 const init = async (_getStatus, _bot, _db) => {
   db = _db
   getStatus = _getStatus
@@ -173,3 +181,4 @@ module.exports.init = init
 module.exports.checkConnectionFailure = checkConnectionFailure
 module.exports.onStatusChange = onStatusChange
 module.exports.getSubscribersList = getSubscribersList
+module.exports.broadcast = broadcast
