@@ -143,7 +143,7 @@ const onStatusChange = async (difference, test = false) => {
   if(test) message += "Внимание, это проверка сети - не обращайте внимание на это сообщение\n"
   for (const key in difference) {
     const status = difference[key]
-    message += `${services[key].nameLocalized.ru}: ${statusEmoji(status.from)} ⮕ ${statusEmoji(status.now)}\n`
+    message += `${services[key].nameLocalized.ru}: ${statusEmoji(status.from)} → ${statusEmoji(status.now)}\n`
   }
   utils.log(`Status change: sending for ${subscribers.length}`)
   logResponse('statusChange', utils.color.blue)
