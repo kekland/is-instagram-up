@@ -149,7 +149,7 @@ const onStatusChange = async (difference, test = false) => {
   logResponse('statusChange', utils.color.blue)
   for (const subscriber of subscribers) {
     bot.api.messages.send({ user_id: subscriber, message: message })
-    await utils.awaitFor(1000)
+    await utils.awaitFor(200)
   }
 }
 
@@ -161,7 +161,7 @@ const broadcast = async (message) => {
   const subscribers = await getSubscribersList()
   for (const subscriber of subscribers) {
     bot.api.messages.send({ user_id: subscriber, message: message })
-    await utils.awaitFor(1000)
+    await utils.awaitFor(200)
   }
 }
 
