@@ -30,5 +30,13 @@
       "en": "Facebook"
     },
     "url": "https://facebook.com"
+  },
+  "whatsapp": {
+    "name": "whatsapp",
+    "nameLocalized": {
+      "ru": "Ватсапп",
+      "en": "WhatsApp"
+    },
+    "url": "https://whatsapp.com"
   }
 }

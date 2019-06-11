@@ -34,10 +34,10 @@ const getStatus = async (onStatusChange) => {
     onStatusChange(difference)
   }
 
-  /*utils.log('status: ')
+  utils.log('status: ')
   for (const key in status) {
     utils.log(`\t${utils.color.gray(key)}: ${utils.getStatusFormatted(status[key])}`)
-  }*/
+  }
 }
 
 const initGetStatus = () => {
