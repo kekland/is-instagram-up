@@ -85,7 +85,7 @@ const handleMessage = async (message) => {
       bot.api.messages.send({ user_id: message.sender, message: responses.welcome })
       logResponse('welcome')
     }
-    else if (text === '/subscribe' || text === 'подписаться') {
+    else if (text === '/subscribe' || text === 'подписаться' || text === 'subscribe') {
       const id = message.sender
 
       const userExists = await userExistsInDatabase(id)
@@ -100,7 +100,7 @@ const handleMessage = async (message) => {
         logResponse('onSubscribe')
       }
     }
-    else if (text === '/unsubscribe' || text === 'отписаться') {
+    else if (text === '/unsubscribe' || text === 'отписаться' || text === 'unsubscribe') {
       const id = message.sender
 
       const userExists = await userExistsInDatabase(id)
@@ -115,7 +115,7 @@ const handleMessage = async (message) => {
         logResponse('onAlreadyUnsubscribed', utils.color.yellow)
       }
     }
-    else if (text === '/status' || text === 'статус сервисов') {
+    else if (text === '/status' || text === 'статус сервисов' || text === 'статус') {
       let statusMessage = 'Вот, что сейчас с интернетом: \n'
       const status = getStatus()
       for (const key in status) {
