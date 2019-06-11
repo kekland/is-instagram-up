@@ -94,6 +94,10 @@ const handleMessage = async (bot, message) => {
   }
 }
 
+const onStatusChange = async (difference) => {
+  utils.log(difference)
+}
+
 const init = async (_getStatus) => {
   await db.init()
   getStatus = _getStatus
@@ -101,3 +105,4 @@ const init = async (_getStatus) => {
 
 module.exports.handleMessage = handleMessage
 module.exports.init = init
+module.exports.onStatusChange = onStatusChange

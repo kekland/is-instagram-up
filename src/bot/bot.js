@@ -6,20 +6,41 @@ const connectivity = require('../connectivity')
 const token = require('../../data/token.json').token
 let bot = null
 
+let previousStatus = {}
 let status = {}
 
+const compareStatuses = () => {
+  const changes = {}
 
-const getStatus = async () => {
+  for (const key in status) {
+    const current = status[key]
+    const previous = previousStatus[key]
+    if (current != previous) {
+      changes[key] = { name: key, from: previous, now: current }
+    }
+  }
+
+  return changes
+}
+
+const getStatus = async (onStatusChange) => {
+  previousStatus = status
   status = await connectivity.checkServices()
+
+  const difference = compareStatuses()
+  if(Object.keys(difference).length > 0) {
+    onStatusChange(difference)
+  }
+
   utils.log('status: ')
-  for(const key in status) {
+  for (const key in status) {
     utils.log(`\t${utils.color.gray(key)}: ${utils.getStatusFormatted(status[key])}`)
   }
 }
 
 const initGetStatus = () => {
-  getStatus()
-  setInterval(() => getStatus(), 15000)
+  getStatus(handler.onStatusChange)
+  setInterval(() => getStatus(handler.onStatusChange), 15000)
 }
 
 const init = async () => {
@@ -36,7 +57,7 @@ const init = async () => {
       handler.handleMessage(bot, message)
     }
   });
-  
+
   utils.log('Bot started', utils.color.green)
 }
 
