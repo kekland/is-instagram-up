@@ -15,12 +15,45 @@ const logResponse = (responseType, color = utils.color.green) => {
   utils.log(`\t${utils.color.gray('response')}: ${color(responseType)}`, utils.color.reset)
 }
 
+const getSubscribersList = async () => {
+  let data = await db.main.get('subscribers')
+  let list = JSON.parse(data)
+  return list
+}
+
 const addUserToDatabase = async (id) => {
   await db.main.put(`${id}`, true)
+  try {
+    let list = await getSubscribersList()
+    const index = list.indexOf(id)
+
+    if (index === -1) {
+      list.push(id)
+    }
+
+    await db.main.put('subscribers', JSON.stringify(list))
+  }
+  catch (e) {
+    utils.log(e, utils.color.red)
+  }
 }
 
 const deleteUserFromDatabase = async (id) => {
   await db.main.del(`${id}`)
+
+  try {
+    let list = await getSubscribersList()
+    const index = list.indexOf(id)
+
+    if (index !== -1) {
+      list.splice(index, 1)
+    }
+
+    await db.main.put('subscribers', JSON.stringify(list))
+  }
+  catch (e) {
+    utils.log(JSON.stringify(e), utils.color.red)
+  }
 }
 
 const userExistsInDatabase = async (id) => {
@@ -75,8 +108,8 @@ const handleMessage = async (bot, message) => {
     else if (text === '/status' || text === 'статус сервисов') {
       let statusMessage = 'Вот, что сейчас с интернетом: \n'
       const status = getStatus()
-      for(const key in status) {
-        statusMessage += `${services[key].nameLocalized.ru}: ${(status[key]? '✔' : '✖')}\n`
+      for (const key in status) {
+        statusMessage += `${services[key].nameLocalized.ru}: ${(status[key] ? '✔' : '✖')}\n`
       }
       bot.api.messages.send({ user_id: message.sender, message: statusMessage })
       logResponse('status')
@@ -95,7 +128,9 @@ const handleMessage = async (bot, message) => {
 }
 
 const onStatusChange = async (difference) => {
-  utils.log(difference)
+  utils.log(JSON.stringify(difference))
+  const subscribers = await getSubscribersList()
+  utils.log(JSON.stringify(subscribers))
 }
 
 const init = async (_getStatus) => {

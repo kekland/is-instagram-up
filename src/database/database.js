@@ -1,5 +1,4 @@
-const levelup = require('levelup')
-const leveldown = require('leveldown')
+const level = require('level')
 const utils = require('../utils')
 
 let db = null
@@ -7,7 +6,7 @@ let db = null
 const init = async () => {
   utils.log('Starting database')
 
-  db = levelup(leveldown('./database/'))
+  db = level('./database/', { valueEncoding: 'json' })
   module.exports.main = db
 
   utils.log('Database started', utils.color.green)

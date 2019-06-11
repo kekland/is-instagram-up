@@ -15,7 +15,7 @@ const compareStatuses = () => {
   for (const key in status) {
     const current = status[key]
     const previous = previousStatus[key]
-    if (current != previous) {
+    if (previous != null && current != previous) {
       changes[key] = { name: key, from: previous, now: current }
     }
   }
