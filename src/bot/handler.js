@@ -1,12 +1,12 @@
 const responses = require('./responses.json')
 const keyboards = require('./keyboards.json')
 
-const db = require('../database/database')
 const utils = require('../utils')
 const services = require('../../data/services.json')
 
 let getStatus = null
 let bot = null
+let db = null
 const logMessage = (message) => {
   utils.log(`Message from ${message.sender}: `, utils.color.blue)
   utils.log(`\t${utils.color.gray('body')}: ${message.text}`, utils.color.reset)
@@ -157,8 +157,8 @@ const checkConnectionFailure = () => {
   onStatusChange({"telegram": {"name": "telegram", from: false, now: true}}, true)
 }
 
-const init = async (_getStatus, _bot) => {
-  await db.init()
+const init = async (_getStatus, _bot, _db) => {
+  db = _db
   getStatus = _getStatus
   bot = _bot
 

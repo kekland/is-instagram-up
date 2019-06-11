@@ -2,6 +2,8 @@ const VK = require('vk-fast-longpoll')
 const handler = require('./handler')
 const utils = require('../utils')
 const connectivity = require('../connectivity')
+const moment = require('moment')
+const db = require('../database/database')
 
 const token = require('../../data/token.json').token
 let bot = null
@@ -23,9 +25,22 @@ const compareStatuses = () => {
   return changes
 }
 
+const saveInHistory = async (status) => {
+  let index = 0
+  try {
+    index = await db.main.get("history_index")
+  } catch(e) {}
+  await db.main.put(`history_${index}`, {timestamp: moment().unix(), data: status})
+  await db.main.put(`history_index`, index + 1)
+  
+  utils.log(`History index: ${index + 1}`, utils.color.gray)
+}
+
 const getStatus = async (onStatusChange) => {
   previousStatus = status
   status = await connectivity.checkServices()
+
+  await saveInHistory(status)
 
   const difference = compareStatuses()
   if(Object.keys(difference).length > 0) {
@@ -48,7 +63,7 @@ const initGetStatus = () => {
 
 const init = async () => {
   utils.log('Starting the bot')
-
+  await db.init()
   initGetStatus()
 
   bot = new VK(token)
@@ -68,7 +83,7 @@ const init = async () => {
     }, 10000)
   }
 
-  await handler.init(() => status, bot)
+  await handler.init(() => status, bot, db)
   utils.log('Bot started', utils.color.green)
 }
 

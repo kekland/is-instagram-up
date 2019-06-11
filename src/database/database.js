@@ -11,5 +11,6 @@ const init = async () => {
 
   utils.log('Database started', utils.color.green)
 }
+
 module.exports.main = db
 module.exports.init = init
