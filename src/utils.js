@@ -19,8 +19,15 @@ const getStatusFormatted = (status) => {
   }
 }
 
+const awaitFor = (time) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(resolve, time)
+  })
+}
+
 module.exports.color = chalk
 module.exports.moment = moment
 module.exports.getTimeFormatted = getTimeFormatted
 module.exports.getStatusFormatted = getStatusFormatted
 module.exports.log = log
+module.exports.awaitFor = awaitFor

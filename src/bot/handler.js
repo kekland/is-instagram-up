@@ -6,6 +6,7 @@ const utils = require('../utils')
 const services = require('../../data/services.json')
 
 let getStatus = null
+let bot = null
 const logMessage = (message) => {
   utils.log(`Message from ${message.sender}: `, utils.color.blue)
   utils.log(`\t${utils.color.gray('body')}: ${message.text}`, utils.color.reset)
@@ -19,6 +20,10 @@ const getSubscribersList = async () => {
   let data = await db.main.get('subscribers')
   let list = JSON.parse(data)
   return list
+}
+
+const statusEmoji = (status) => {
+  return (status)? '✅' : '❌'
 }
 
 const addUserToDatabase = async (id) => {
@@ -66,7 +71,7 @@ const userExistsInDatabase = async (id) => {
   }
 }
 
-const handleMessage = async (bot, message) => {
+const handleMessage = async (message) => {
   try {
     const text = message.text.toLowerCase()
     logMessage(message)
@@ -109,7 +114,7 @@ const handleMessage = async (bot, message) => {
       let statusMessage = 'Вот, что сейчас с интернетом: \n'
       const status = getStatus()
       for (const key in status) {
-        statusMessage += `${services[key].nameLocalized.ru}: ${(status[key] ? '✔' : '✖')}\n`
+        statusMessage += `${services[key].nameLocalized.ru}: ${statusEmoji(status[key])}\n`
       }
       bot.api.messages.send({ user_id: message.sender, message: statusMessage })
       logResponse('status')
@@ -128,14 +133,24 @@ const handleMessage = async (bot, message) => {
 }
 
 const onStatusChange = async (difference) => {
-  utils.log(JSON.stringify(difference))
   const subscribers = await getSubscribersList()
-  utils.log(JSON.stringify(subscribers))
+  let message = "Ой, ой - что-то поменялось: \n"
+  for(const key in difference) {
+    const status = difference[key]
+    message += `${services[key].nameLocalized.ru}: ${statusEmoji(status.from)} ⮕ ${statusEmoji(status.now)}\n`
+  }
+  utils.log(`Status change: sending for ${subscribers.length}`)
+  logResponse('statusChange', utils.color.blue)
+  for(const subscriber of subscribers) {
+    bot.api.messages.send({ user_id: subscriber, message: message })
+    await utils.awaitFor(100)
+  }
 }
 
-const init = async (_getStatus) => {
+const init = async (_getStatus, _bot) => {
   await db.init()
   getStatus = _getStatus
+  bot = _bot
 }
 
 module.exports.handleMessage = handleMessage

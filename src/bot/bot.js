@@ -40,13 +40,12 @@ const getStatus = async (onStatusChange) => {
 
 const initGetStatus = () => {
   getStatus(handler.onStatusChange)
-  setInterval(() => getStatus(handler.onStatusChange), 15000)
+  setInterval(() => getStatus(handler.onStatusChange), 8000)
 }
 
 const init = async () => {
   utils.log('Starting the bot')
 
-  await handler.init(() => status)
   initGetStatus()
 
   bot = new VK(token)
@@ -54,10 +53,11 @@ const init = async () => {
 
   bot.longpoll.on('message', (message) => {
     if (!message.isOutbox) {
-      handler.handleMessage(bot, message)
+      handler.handleMessage(message)
     }
   });
 
+  await handler.init(() => status, bot)
   utils.log('Bot started', utils.color.green)
 }
 
