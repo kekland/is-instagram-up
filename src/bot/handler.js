@@ -139,7 +139,7 @@ const handleMessage = async (message) => {
 
 const onStatusChange = async (difference, test = false) => {
   const subscribers = await getSubscribersList()
-  let message = "Ой, ой - что-то поменялось: \n"
+  let message = ""
   if(test) message += "Внимание, это проверка сети - не обращайте внимание на это сообщение\n"
   for (const key in difference) {
     const status = difference[key]
