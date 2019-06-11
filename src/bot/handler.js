@@ -116,7 +116,7 @@ const handleMessage = async (message) => {
       }
     }
     else if (text === '/status' || text === 'статус сервисов' || text === 'статус') {
-      let statusMessage = 'Вот, что сейчас с интернетом: \n'
+      let statusMessage = ''
       const status = getStatus()
       for (const key in status) {
         statusMessage += `${services[key].nameLocalized.ru}: ${statusEmoji(status[key])}\n`

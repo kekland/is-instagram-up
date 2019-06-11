@@ -22,6 +22,7 @@ const bootstrap = async () => {
     res.send({count})
   })
 
+  utils.log(`Listening on port 8080`, utils.color.green)
   app.listen(8080)
 }
 

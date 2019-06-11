@@ -58,7 +58,17 @@ const getStatus = async (onStatusChange) => {
   }
 }
 
-const initGetStatus = () => {
+const initGetStatus = async () => {
+  try {
+    const history = await this.serverGetHistory()
+    if(history.length > 0) {
+      status = history[history.length - 1].data
+    }
+    utils.log(`Loaded status from history, index ${history.length - 1}`, utils.color.blue)
+  }
+  catch(e) {
+    status = {}
+  }
   getStatus(handler.onStatusChange)
   setInterval(() => getStatus(handler.onStatusChange), 3 * 60 * 1000)
 }
