@@ -60,7 +60,7 @@ const init = async () => {
     }
   });
 
-  if(process.argv.length > 0 && process.argv[0] == 'test') {
+  if(process.argv.length > 1 && process.argv[1] === 'test') {
     utils.log("Test commencing in 10 seconds")
     setTimeout(() => {
       utils.log("Test running")
