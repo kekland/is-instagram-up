@@ -137,9 +137,10 @@ const handleMessage = async (message) => {
   }
 }
 
-const onStatusChange = async (difference) => {
+const onStatusChange = async (difference, test = false) => {
   const subscribers = await getSubscribersList()
   let message = "Ой, ой - что-то поменялось: \n"
+  if(test) message += "Внимание, это проверка сети - не обращайте внимание на это сообщение"
   for (const key in difference) {
     const status = difference[key]
     message += `${services[key].nameLocalized.ru}: ${statusEmoji(status.from)} ⮕ ${statusEmoji(status.now)}\n`
@@ -150,6 +151,10 @@ const onStatusChange = async (difference) => {
     bot.api.messages.send({ user_id: subscriber, message: message })
     await utils.awaitFor(100)
   }
+}
+
+const checkConnectionFailure = () => {
+  onStatusChange({"telegram": {"name": "telegram", from: false, now: true}}, true)
 }
 
 const init = async (_getStatus, _bot) => {
@@ -165,4 +170,5 @@ const init = async (_getStatus, _bot) => {
 
 module.exports.handleMessage = handleMessage
 module.exports.init = init
+module.exports.checkConnectionFailure = checkConnectionFailure
 module.exports.onStatusChange = onStatusChange

@@ -45,6 +45,7 @@ const initGetStatus = () => {
   setInterval(() => getStatus(handler.onStatusChange), 15000)
 }
 
+
 const init = async () => {
   utils.log('Starting the bot')
 
@@ -58,6 +59,14 @@ const init = async () => {
       handler.handleMessage(message)
     }
   });
+
+  if(process.argv.length > 0 && process.argv[0] == 'test') {
+    utils.log("Test commencing in 10 seconds")
+    setTimeout(() => {
+      utils.log("Test running")
+      handler.checkConnectionFailure()
+    }, 10000)
+  }
 
   await handler.init(() => status, bot)
   utils.log('Bot started', utils.color.green)
