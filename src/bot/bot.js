@@ -42,7 +42,7 @@ const getStatus = async (onStatusChange) => {
 
 const initGetStatus = () => {
   getStatus(handler.onStatusChange)
-  setInterval(() => getStatus(handler.onStatusChange), 15000)
+  setInterval(() => getStatus(handler.onStatusChange), 60000)
 }
 
 
