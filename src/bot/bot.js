@@ -54,7 +54,7 @@ const addUser = async (id) => {
 const removeUser = async (id) => {
   const index = users.indexOf(id)
   if (index !== -1) {
-    users.splice(index)
+    users.splice(index, 1)
   }
 
   await firebase.database().ref().child(`users/${id}`).set(false)

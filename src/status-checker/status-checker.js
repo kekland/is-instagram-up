@@ -56,7 +56,7 @@ const poll = async (services) => {
   await historyRef.set(data)
 
   if(cachedHistory.length >= cachedHistoryLength) {
-    cachedHistory.splice(0)
+    cachedHistory.splice(0, 1)
     cachedHistory.push(data)
   }
   await firebase.database().ref('status/current').set(data)
