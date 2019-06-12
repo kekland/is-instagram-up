@@ -1,7 +1,6 @@
 const VK = require('vk-fast-longpoll')
 const utils = require('../utils')
 const admin = require('firebase-admin')
-const services = require('../../data/services.json')
 const statusGenerator = require('./status')
 const handler = require('./handlers/handlers')
 
@@ -14,6 +13,7 @@ const firebase = admin.initializeApp({
 
 let cachedStatus = 'Нет статуса, пожалуйста, подождите'
 let users = []
+let services = {}
 const initFirebase = async () => {
   utils.log("Initalizing firebase")
   const subs = (await firebase.database().ref().child('users').once('value')).toJSON()
@@ -23,6 +23,8 @@ const initFirebase = async () => {
     }
   }
   utils.log(`Got ${utils.color.green(users.length.toString())} subscribers`)
+
+  services = (await firebase.database().ref('params/services')).toJSON()
 
   firebase.database().ref().child('status/current/data').on('value', (value) => {
     utils.log('Got firebase update, generating message.', utils.color.grey)

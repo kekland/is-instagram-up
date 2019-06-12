@@ -90,8 +90,9 @@ const bootstrap = async () => {
 
   utils.log(`Starting to poll, got ${utils.color.green(serviceCount.toString())} services.`)
 
-  //poll(services)
+  poll(services)
   setInterval(() => poll(services), interval * 1000)
+
 
   const app = express()
 

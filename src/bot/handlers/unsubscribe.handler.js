@@ -2,7 +2,7 @@ const responses = require('./responses.json')
 const keyboards = require('./keyboards.json')
 
 const tryHandle = async (bot, message, firebase, cachedStatus, users, onSubscribe, onUnsubscribe, logger) => {
-  const text = message.text
+  const text = message.text.toLowerCase()
   if (text === '/unsubscribe' || text === 'отписаться' || text === 'unsubscribe') {
     const id = message.sender
 
@@ -15,7 +15,7 @@ const tryHandle = async (bot, message, firebase, cachedStatus, users, onSubscrib
     }
     else {
       bot.api.messages.send({ user_id: message.sender, message: responses.onAlreadyUnsubscribed, keyboard: keyboards.subscribeKeyboard })
-      logger.logResponse('onAlreadyUnsubscribed', utils.color.yellow)
+      logger.logResponse('onAlreadyUnsubscribed')
     }
 
     return true
