@@ -12,4 +12,4 @@ const newStatus = {
 
 const statusGenerator = require('./status')
 
-console.log(statusGenerator.compareStatuses(status, newStatus))
+console.log(statusGenerator.generateStatusChangeMessage(statusGenerator.compareStatuses(status, newStatus), {instagram: {nameLocalized: {ru: "xd"}}}))

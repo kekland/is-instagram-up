@@ -36,7 +36,7 @@ const initFirebase = async () => {
       const difference = statusGenerator.compareStatuses(previousStatus, status)
       if(Object.keys(difference) > 0) {
         utils.log(`Difference - sending messages now.`)
-        const message = statusGenerator.generateStatusChangeMessage(difference)
+        const message = statusGenerator.generateStatusChangeMessage(difference, services)
         massMessenger.messageEveryone(bot, users, message)
       }
     }
@@ -75,7 +75,7 @@ const bootstrap = async () => {
   });
 
   utils.log('Bot started', utils.color.green)
-  //massMessenger.messageEveryone(bot, users, 'Проверка бота на новой версии...')
+  massMessenger.messageEveryone(bot, users, 'Внимание, сейчас будет тест изменения статуса: ')
 }
 
 bootstrap()

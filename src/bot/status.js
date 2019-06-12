@@ -27,7 +27,7 @@ const compareStatuses = (previousStatus, newStatus) => {
   return changes
 }
 
-const generateStatusChangeMessage = (difference) => {
+const generateStatusChangeMessage = (difference, services) => {
   let message = ''
   for (const key in difference) {
     const status = difference[key]
