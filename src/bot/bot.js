@@ -73,7 +73,6 @@ const bootstrap = async () => {
 
   bot.longpoll.on('message', (message) => {
     if (!message.isOutbox) {
-      console.log(message.sender)
       handler.handle(bot, message, firebase, cachedStatus, users, addUser, removeUser)
     }
   });

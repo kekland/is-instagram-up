@@ -4,7 +4,7 @@ const keyboards = require('./keyboards.json')
 const tryHandle = async (bot, message, firebase, cachedStatus, users, onSubscribe, onUnsubscribe, logger) => {
   const text = message.text.toLowerCase()
   if (text === '/unsubscribe' || text === 'отписаться' || text === 'unsubscribe') {
-    const id = message.sender
+    const id = message.sender.toString()
 
     const userExists = users.indexOf(id) !== -1
     if (userExists) {
