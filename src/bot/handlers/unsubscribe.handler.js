@@ -1,6 +1,6 @@
 const handler = require('./handlers')
 
-const tryHandle = (bot, message, firebase, cachedStatus, users, onSubscribe, onUnsubscribe) => {
+const tryHandle = async (bot, message, firebase, cachedStatus, users, onSubscribe, onUnsubscribe) => {
   if (text === '/unsubscribe' || text === 'отписаться' || text === 'unsubscribe') {
     const id = message.sender
 
