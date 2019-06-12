@@ -24,6 +24,7 @@ const initFirebase = async () => {
       users.push(sub)
     }
   }
+  console.log(users)
   utils.log(`Got ${utils.color.green(users.length.toString())} subscribers`)
 
   services = (await firebase.database().ref().child('params/services').once('value')).toJSON()
@@ -72,6 +73,7 @@ const bootstrap = async () => {
 
   bot.longpoll.on('message', (message) => {
     if (!message.isOutbox) {
+      console.log(message.sender)
       handler.handle(bot, message, firebase, cachedStatus, users, addUser, removeUser)
     }
   });
