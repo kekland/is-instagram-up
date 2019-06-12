@@ -1,8 +1,6 @@
-const handler = require('./handlers')
-
-const tryHandle = async (bot, message, firebase, cachedStatus, users, onSubscribe, onUnsubscribe) => {
+const tryHandle = async (bot, message, firebase, cachedStatus, users, onSubscribe, onUnsubscribe, logger) => {
   bot.api.messages.send({ user_id: message.sender, message: responses.unknown })
-  handler.logResponse('unknown', utils.color.red)
+  logger.logResponse('unknown', utils.color.red)
 
   return true
 }

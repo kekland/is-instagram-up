@@ -1,6 +1,4 @@
-const handler = require('./handlers')
-
-const tryHandle = async (bot, message, firebase, cachedStatus, users, onSubscribe, onUnsubscribe) => {
+const tryHandle = async (bot, message, firebase, cachedStatus, users, onSubscribe, onUnsubscribe, logger) => {
   if (text === '/unsubscribe' || text === 'отписаться' || text === 'unsubscribe') {
     const id = message.sender
 
@@ -9,11 +7,11 @@ const tryHandle = async (bot, message, firebase, cachedStatus, users, onSubscrib
       await onUnsubscribe(id)
 
       bot.api.messages.send({ user_id: message.sender, message: responses.onUnsubscribe, keyboard: keyboards.subscribeKeyboard })
-      handler.logResponse('onUnsubscribe')
+      logger.logResponse('onUnsubscribe')
     }
     else {
       bot.api.messages.send({ user_id: message.sender, message: responses.onAlreadyUnsubscribed, keyboard: keyboards.subscribeKeyboard })
-      handler.logResponse('onAlreadyUnsubscribed', utils.color.yellow)
+      logger.logResponse('onAlreadyUnsubscribed', utils.color.yellow)
     }
 
     return true

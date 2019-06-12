@@ -1,13 +1,4 @@
-const utils = require('../../utils')
-
-const logMessage = (message) => {
-  utils.log(`Message from ${message.sender}: `, utils.color.blue)
-  utils.log(`\t${utils.color.gray('body')}: ${message.text}`, utils.color.reset)
-}
-
-const logResponse = (responseType, color = utils.color.green) => {
-  utils.log(`\t${utils.color.gray('response')}: ${color(responseType)}`, utils.color.reset)
-}
+const logger = require('./logger')
 
 const handlers = [
   require('./welcome.handler').tryHandle,
@@ -18,9 +9,9 @@ const handlers = [
 ]
 
 const handle = async (bot, message, firebase, cachedStatus, users, onSubscribe, onUnsubscribe) => {
-  logMessage(message)
+  logger.logMessage(message)
   for(const handler of handlers) {
-    const result = await handler(bot, message, firebase, cachedStatus, users, onSubscribe, onUnsubscribe)
+    const result = await handler(bot, message, firebase, cachedStatus, users, onSubscribe, onUnsubscribe, logger)
     if(result) {
       return true
     }
@@ -28,5 +19,4 @@ const handle = async (bot, message, firebase, cachedStatus, users, onSubscribe, 
   return false
 }
 
-module.exports.logMessage = logMessage
-module.exports.logResponse = logResponse
+module.exports.handle = handle
