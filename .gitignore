@@ -4,3 +4,4 @@ api.log
 longpoll.log
 /database/
 .vscode/
+adminsdk.json
