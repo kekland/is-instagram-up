@@ -3,6 +3,7 @@ const statusEmoji = (status) => {
 }
 
 const generateMessage = (status, services) => {
+  //console.log(status, services)
   let statusMessage = ''
   
   for (const key in status) {

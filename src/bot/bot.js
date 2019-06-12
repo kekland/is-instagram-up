@@ -1,6 +1,6 @@
 const VK = require('vk-fast-longpoll')
 const utils = require('../utils')
-const firebase = require('firebase-admin')
+const admin = require('firebase-admin')
 const token = require('../../data/token.json').token
 const services = require('../../data/services.json')
 const statusGenerator = require('./status')
@@ -25,12 +25,9 @@ const initFirebase = async () => {
   }
   utils.log(`Got ${utils.color.green(users.length.toString())} subscribers`)
 
-  cachedStatus = (await firebase.database().ref().child('status/current/data').once('value')).toJSON()
-  utils.log(`Got cached status`)
-
   firebase.database().ref().child('status/current/data').on('value', (value) => {
     utils.log('Got firebase update, generating message.', utils.color.grey)
-    cachedStatus = statusGenerator.generate(value, services)
+    cachedStatus = statusGenerator.generate(value.toJSON(), services)
   })
   utils.log(`Subscribed to update event`)
 }

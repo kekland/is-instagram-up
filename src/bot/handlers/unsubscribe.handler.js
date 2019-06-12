@@ -1,4 +1,8 @@
+const responses = require('./responses.json')
+const keyboard = require('./keyboards.json')
+
 const tryHandle = async (bot, message, firebase, cachedStatus, users, onSubscribe, onUnsubscribe, logger) => {
+  const text = message.text
   if (text === '/unsubscribe' || text === 'отписаться' || text === 'unsubscribe') {
     const id = message.sender
 
