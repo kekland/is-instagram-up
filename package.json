@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/server.js",
-    
+    "start:bot": "node src/bot/bot.js",
+    "start:status": "node src/status-checker/status-checker.js"
   },
   "repository": {
     "type": "git",

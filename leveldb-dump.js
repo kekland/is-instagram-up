@@ -1,4 +1,4 @@
-const level = require('level')
+/*const level = require('level')
 const fs = require('fs')
 let x = ''
 let db = level('./database/', { valueEncoding: 'json' })
@@ -9,3 +9,4 @@ db.createReadStream().on('data', (data) => {
 setTimeout(() => {
   fs.writeFileSync('./dump.txt', x)
 }, 3000)
+*/
