@@ -72,6 +72,8 @@ const downloadFromCache = async () => {
   cachedHistory = Object.values(
     (await firebase.database().ref().child('status/history').orderByKey().limitToLast(cachedHistoryLength).once('value')).toJSON()
   )
+
+  console.log(cachedHistory)
   utils.log(`Cached status downloaded, length: ${utils.color.green(cachedHistory.length.toString())}`)
 }
 
