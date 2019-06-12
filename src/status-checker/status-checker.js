@@ -1,7 +1,10 @@
 const admin = require('firebase-admin')
 const axios = require('axios').default
 const utils = require('../utils')
+const cors = require('cors')
 const moment = require('moment')
+const express = require('express')
+
 var serviceAccount = require("../../adminsdk.json");
 
 const firebase = admin.initializeApp({
@@ -38,6 +41,9 @@ const logStatus = async (status) => {
   }
 }
 
+let cachedStatus = {}
+let cachedHistory = []
+let cachedHistoryLength = 0
 const poll = async (services) => {
   const status = await pollServices(services)
   const timestamp = moment().unix()
@@ -46,10 +52,28 @@ const poll = async (services) => {
 
   logStatus(status)
 
-  await firebase.database().ref('status/history').push(data)
+  const historyRef = await firebase.database().ref('status/history').push(data)
+  await historyRef.set(data)
+
+  if(cachedHistory.length >= cachedHistoryLength) {
+    cachedHistory.splice(0)
+    cachedHistory.push(data)
+  }
   await firebase.database().ref('status/current').set(data)
 }
 
+const downloadFromCache = async () => {
+  utils.log('Downloading from cache...')
+  cachedStatus = (await firebase.database().ref().child('status/current').once('value')).toJSON().data
+  
+  utils.log('Current status downloaded: ')
+  logStatus(cachedStatus)
+
+  cachedHistory = Object.values(
+    (await firebase.database().ref().child('status/history').orderByKey().limitToLast(cachedHistoryLength).once('value')).toJSON()
+  )
+  utils.log(`Cached status downloaded, length: ${utils.color.green(cachedHistory.length.toString())}`)
+}
 
 const bootstrap = async () => {
   const params = (await firebase.database().ref().child('params').once('value')).toJSON()
@@ -57,11 +81,35 @@ const bootstrap = async () => {
   const interval = params.requestInterval
   const services = params.services
   const serviceCount = Object.keys(services).length
-  utils.log(`Starting to poll, got ${utils.color.green(serviceCount.toString())} services.`)
-  utils.log(`Request interval: ${utils.color.green(params.requestInterval.toString())}s`)
+  cachedHistoryLength = params.cachedHistoryLength
 
-  poll(services)
+  utils.log(`Request interval: ${utils.color.green(interval.toString())}s`)
+  utils.log(`Cache length: ${utils.color.green(cachedHistoryLength.toString())} items`)
+
+  await downloadFromCache()
+
+  utils.log(`Starting to poll, got ${utils.color.green(serviceCount.toString())} services.`)
+
+  //poll(services)
   setInterval(() => poll(services), interval * 1000)
+
+  const app = express()
+
+  app.use(cors())
+
+  app.get('/status', (req, res) => {
+    utils.log(`IP: ${utils.color.green(req.ip)}\treq: status`)
+    res.send(cachedStatus)
+  })
+
+  app.get('/history', (req, res) => {
+    utils.log(`IP: ${utils.color.green(req.ip)}\treq: history`)
+    res.send(cachedHistory)
+  })
+
+  app.listen(8081, () => {
+    utils.log(`Server listening on port ${utils.color.green('8081')}`)
+  })
 }
 
 bootstrap()
