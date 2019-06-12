@@ -1,7 +1,6 @@
 const VK = require('vk-fast-longpoll')
 const utils = require('../utils')
 const admin = require('firebase-admin')
-const token = require('../../data/token.json').token
 const services = require('../../data/services.json')
 const statusGenerator = require('./status')
 const handler = require('./handlers/handlers')
@@ -50,7 +49,8 @@ const bootstrap = async () => {
   utils.log('Starting the bot')
 
   await initFirebase()
-
+  const token = (await firebase.database().ref().child('params/token').once('value')).toJSON()
+  utils.log(`Got service token ${token.slice(0, 6)}...`)
   bot = new VK(token)
   bot.longpoll.start()
 
