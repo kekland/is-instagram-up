@@ -21,7 +21,7 @@ const initFirebase = async () => {
   const subs = (await firebase.database().ref().child('users').once('value')).toJSON()
   for (let sub in subs) {
     if (subs[sub]) {
-      users.push(parseInt(sub))
+      users.push(sub)
     }
   }
   utils.log(`Got ${utils.color.green(users.length.toString())} subscribers`)
@@ -77,7 +77,7 @@ const bootstrap = async () => {
   });
 
   utils.log('Bot started', utils.color.green)
-  massMessenger.messageEveryone(bot, users, 'Извиняюсь за частые тесты, но бот почему-то не работал. Сейчас будет тест изменения статуса: ')
+  //massMessenger.messageEveryone(bot, users, 'Извиняюсь за частые тесты, но бот почему-то не работал. Сейчас будет тест изменения статуса: ')
 }
 
 bootstrap()
