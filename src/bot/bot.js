@@ -74,7 +74,7 @@ const bootstrap = async () => {
   });
 
   utils.log('Bot started', utils.color.green)
-  massMessenger.messageEveryone(bot, users, 'hi')
+  massMessenger.messageEveryone(bot, users, 'Проверка бота на новой версии...')
 }
 
 bootstrap()

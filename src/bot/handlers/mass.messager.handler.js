@@ -17,7 +17,7 @@ const messageEveryone = async (bot, users, message) => {
       ids += user.toString() + ','
     }
     ids = ids.slice(0, ids.length - 1)
-    utils.log(`Sending first batch for ${batch.length.toString()} users`)
+    utils.log(`Sending batched message for ${batch.length.toString()} users`)
     bot.api.messages.send({ user_ids: ids, message: message })
     await utils.awaitFor(100)
   }

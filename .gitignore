@@ -5,3 +5,4 @@ longpoll.log
 /database/
 .vscode/
 adminsdk.json
+dump.txt
