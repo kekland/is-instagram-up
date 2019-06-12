@@ -1,6 +1,6 @@
 const utils = require('./utils')
 const connectivity = require('./connectivity')
-const bot = require('./bot/bot')
+const bot = require('./bot-backup/bot')
 const cors = require('cors')
 const express = require('express')
 
