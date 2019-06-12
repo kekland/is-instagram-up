@@ -28,6 +28,7 @@ const pollServices = async (services) => {
   for (const serviceKey in services) {
     const service = services[serviceKey]
     const working = await getSerivce(service)
+    console.log(service, working)
     status[serviceKey] = working;
   }
 
