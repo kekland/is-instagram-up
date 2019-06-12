@@ -6,7 +6,7 @@ const tryHandle = async (bot, message, firebase, cachedStatus, users, onSubscrib
   if (text === '/subscribe' || text === 'подписаться' || text === 'subscribe') {
     const id = message.sender.toString()
 
-    const userExists = users.indexOf(id) !== -1
+    const userExists = users.includes(id)
     if (userExists) {
       bot.api.messages.send({ user_id: message.sender, message: responses.onAlreadySubscribed, keyboard: keyboards.subscribedKeyboard })
       logger.logResponse('onAlreadySubscribed')

@@ -6,7 +6,7 @@ const tryHandle = async (bot, message, firebase, cachedStatus, users, onSubscrib
   if (text === '/unsubscribe' || text === 'отписаться' || text === 'unsubscribe') {
     const id = message.sender.toString()
 
-    const userExists = users.indexOf(id) !== -1
+    const userExists = users.includes(id)
     if (userExists) {
       await onUnsubscribe(id)
 
