@@ -38,6 +38,18 @@ const logStatus = async (status) => {
   }
 }
 
+const poll = async (services) => {
+  const status = await pollServices(services)
+  const timestamp = moment().unix()
+
+  const data = { timestamp: timestamp, data: status }
+
+  logStatus(status)
+
+  await firebase.database().ref('status/history').push(data)
+  await firebase.database().ref('status/current').set(data)
+}
+
 
 const bootstrap = async () => {
   const params = (await firebase.database().ref().child('params').once('value')).toJSON()
@@ -45,20 +57,11 @@ const bootstrap = async () => {
   const interval = params.requestInterval
   const services = params.services
   const serviceCount = Object.keys(services).length
-  utils.log(`Starting to poll, got ${utils.color.green(serviceCount.toString())} services.`, utils.color.grey)
-  utils.log(`Request interval: ${utils.color.green(params.requestInterval.toString())}s.`, utils.color.gray)
+  utils.log(`Starting to poll, got ${utils.color.green(serviceCount.toString())} services.`)
+  utils.log(`Request interval: ${utils.color.green(params.requestInterval.toString())}s`)
 
-  setInterval(async () => {
-    const status = await pollServices()
-    const timestamp = moment().unix()
-
-    const data = { timestamp: timestamp, data: status }
-
-    logStatus(status)
-
-    await firebase.database().ref('status/history').push(data)
-    await firebase.database().ref('status/current').set(data)
-  }, interval * 1000)
+  poll(services)
+  setInterval(() => poll(services), interval * 1000)
 }
 
 bootstrap()
