@@ -2,6 +2,7 @@ const VK = require('vk-fast-longpoll')
 const utils = require('../utils')
 const admin = require('firebase-admin')
 const statusGenerator = require('./status')
+const massMessenger = require('./handlers/mass.messager.handler')
 const handler = require('./handlers/handlers')
 
 var serviceAccount = require("../../adminsdk.json");
@@ -11,6 +12,7 @@ const firebase = admin.initializeApp({
   databaseURL: "https://is-instagram-up.firebaseio.com/"
 })
 
+let previousStatus = null
 let cachedStatus = 'Нет статуса, пожалуйста, подождите'
 let users = []
 let services = {}
@@ -24,11 +26,20 @@ const initFirebase = async () => {
   }
   utils.log(`Got ${utils.color.green(users.length.toString())} subscribers`)
 
-  services = (await firebase.database().ref('params/services')).toJSON()
-
+  services = (await firebase.database().ref().child('params/services').once('value')).toJSON()
   firebase.database().ref().child('status/current/data').on('value', (value) => {
     utils.log('Got firebase update, generating message.', utils.color.grey)
-    cachedStatus = statusGenerator.generate(value.toJSON(), services)
+    const status = value.toJSON()
+    cachedStatus = statusGenerator.generate(status, services)
+    
+    if(previousStatus != null) {
+      const difference = statusGenerator.compareStatuses(previousStatus, status)
+      if(Object.keys(difference) > 0) {
+        utils.log(`Difference - sending messages now.`)
+        const message = statusGenerator.generateStatusChangeMessage(difference)
+        massMessenger.messageEveryone(bot, users, message)
+      }
+    }
   })
   utils.log(`Subscribed to update event`)
 }
@@ -63,6 +74,7 @@ const bootstrap = async () => {
   });
 
   utils.log('Bot started', utils.color.green)
+  massMessenger.messageEveryone(bot, users, 'hi')
 }
 
 bootstrap()
