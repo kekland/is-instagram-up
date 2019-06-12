@@ -24,7 +24,6 @@ const initFirebase = async () => {
       users.push(sub)
     }
   }
-  console.log(users)
   utils.log(`Got ${utils.color.green(users.length.toString())} subscribers`)
 
   services = (await firebase.database().ref().child('params/services').once('value')).toJSON()
@@ -35,7 +34,6 @@ const initFirebase = async () => {
     
     if(previousStatus != null) {
       const difference = statusGenerator.compareStatuses(previousStatus, status)
-      console.log(difference)
       // I know that this is ugly, sorry for that.
       if(JSON.stringify(difference) !== "{}") {
         utils.log(`Difference - sending messages now.`)

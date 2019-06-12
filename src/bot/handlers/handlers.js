@@ -5,6 +5,7 @@ const handlers = [
   require('./subscribe.handler').tryHandle,
   require('./unsubscribe.handler').tryHandle,
   require('./status.handler').tryHandle,
+  require('./thanks.handler').tryHandle,
   require('./unknown.handler').tryHandle
 ]
 
