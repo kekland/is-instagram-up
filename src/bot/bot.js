@@ -40,6 +40,7 @@ const initFirebase = async () => {
         massMessenger.messageEveryone(bot, users, message)
       }
     }
+    previousStatus = status
   })
   utils.log(`Subscribed to update event`)
 }
@@ -74,7 +75,7 @@ const bootstrap = async () => {
   });
 
   utils.log('Bot started', utils.color.green)
-  massMessenger.messageEveryone(bot, users, 'Проверка бота на новой версии...')
+  //massMessenger.messageEveryone(bot, users, 'Проверка бота на новой версии...')
 }
 
 bootstrap()
