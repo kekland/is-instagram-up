@@ -91,7 +91,7 @@ const bootstrap = async () => {
   })
 
   app.listen(9000)
-  massMessenger.messageEveryone(bot, users, 'Только что был сбой системы - сейчас мы вроде всё починили.')
+  massMessenger.messageEveryone(bot, users, 'Только что был сбой системы - сейчас мы вроде всё починили. Извиняемся за сбой. Текущий статус: всё работает.')
 }
 
 bootstrap()
