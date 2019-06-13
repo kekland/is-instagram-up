@@ -33,7 +33,7 @@ const pollServices = async (services) => {
   for (const serviceKey in services) {
     const service = services[serviceKey]
     const working = await getSerivce(service)
-    console.log(service.name, working)
+    //console.log(service.name, working)
     status[serviceKey] = working;
   }
 
@@ -52,6 +52,7 @@ let cachedHistory = []
 let cachedHistoryLength = 0
 const poll = async (services) => {
   const status = await pollServices(services)
+  cachedStatus = status
   const timestamp = moment().unix()
 
   const data = { timestamp: timestamp, data: status }

@@ -4,6 +4,7 @@ const admin = require('firebase-admin')
 const statusGenerator = require('./status')
 const massMessenger = require('./handlers/mass.messager.handler')
 const handler = require('./handlers/handlers')
+const express = require('express')
 
 var serviceAccount = require("../../adminsdk.json");
 
@@ -65,6 +66,7 @@ const bootstrap = async () => {
 
   await initFirebase()
   const token = (await firebase.database().ref().child('params/token').once('value')).toJSON()
+  const messagingPassword = (await firebase().ref().child('params/messaging').once('value')).toJSON()
   utils.log(`Got service token ${token.slice(0, 6)}...`)
   bot = new VK(token)
   bot.longpoll.start()
@@ -76,7 +78,20 @@ const bootstrap = async () => {
   });
 
   utils.log('Bot started', utils.color.green)
-  //massMessenger.messageEveryone(bot, users, 'Извиняюсь за частые тесты, но бот почему-то не работал. Сейчас будет тест изменения статуса: ')
+
+  const app = express()
+  app.post('/message', (req, res) => {
+    const body = JSON.parse(req.body)
+    if(body.password === messagingPassword) {
+      utils.log(`Sending message ${body.message}`)
+      //massMessenger.messageEveryone(bot, users, message)
+      res.send(true)
+    }
+    res.send(false)
+  })
+
+  app.listen(9000)
+  massMessenger.messageEveryone(bot, users, 'Только что был сбой системы - сейчас мы вроде всё починили.')
 }
 
 bootstrap()
