@@ -38,5 +38,38 @@
         }
       ]
     ]
+  },
+  "keyboardWithAllButtons": {
+    "one_time": false,
+    "buttons": [
+      [
+        {
+          "action": {
+            "type": "text",
+            "payload": "{\"button\": \"1\"}",
+            "label": "Статус сервисов"
+          },
+          "color": "positive"
+        }
+      ],
+      [
+        {
+          "action": {
+            "type": "text",
+            "payload": "{\"button\": \"1\"}",
+            "label": "Подписаться"
+          },
+          "color": "primary"
+        },
+        {
+          "action": {
+            "type": "text",
+            "payload": "{\"button\": \"2\"}",
+            "label": "Отписаться"
+          },
+          "color": "negative"
+        }
+      ]
+    ]
   }
 }

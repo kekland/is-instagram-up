@@ -12,13 +12,18 @@ const firebase = admin.initializeApp({
   databaseURL: "https://is-instagram-up.firebaseio.com/"
 })
 
-const getSerivce = async (service) => {
+let requestTimeout = 5000
+let maxRequestRetries = 3
+const getSerivce = async (service, currentRetry = 0) => {
+  if(currentRetry === maxRequestRetries) return false
   try {
-    const response = await axios.get(service.urlToCheck, { timeout: 10000 })
+    const response = await axios.get(service.urlToCheck, { timeout: requestTimeout, headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
+    } })
     return true
   }
   catch (e) {
-    return false
+    return getSerivce(service, currentRetry + 1)
   }
 }
 
@@ -28,7 +33,7 @@ const pollServices = async (services) => {
   for (const serviceKey in services) {
     const service = services[serviceKey]
     const working = await getSerivce(service)
-    console.log(service, working)
+    console.log(service.name, working)
     status[serviceKey] = working;
   }
 
@@ -74,7 +79,6 @@ const downloadFromCache = async () => {
     (await firebase.database().ref().child('status/history').orderByKey().limitToLast(cachedHistoryLength).once('value')).toJSON()
   )
 
-  console.log(cachedHistory)
   utils.log(`Cached status downloaded, length: ${utils.color.green(cachedHistory.length.toString())}`)
 }
 
@@ -85,9 +89,13 @@ const bootstrap = async () => {
   const services = params.services
   const serviceCount = Object.keys(services).length
   cachedHistoryLength = params.cachedHistoryLength
+  maxRequestRetries = params.maxRequestRetries
+  requestTimeout = params.requestTimeout
 
   utils.log(`Request interval: ${utils.color.green(interval.toString())}s`)
   utils.log(`Cache length: ${utils.color.green(cachedHistoryLength.toString())} items`)
+  utils.log(`Request timeout: ${utils.color.green(requestTimeout.toString())}ms`)
+  utils.log(`Request retries: ${utils.color.green(maxRequestRetries.toString())} times`)
 
   await downloadFromCache()
 
@@ -100,14 +108,20 @@ const bootstrap = async () => {
   const app = express()
 
   app.use(cors())
+  app.use((req, res, next) => {
+    utils.log(`IP: ${utils.color.green(req.ip)}\treq: ${utils.color.blue(req.path)}`)
+    next()
+  })
+
+  app.get('/services', (req, res) => {
+    res.send(services)
+  })
 
   app.get('/status', (req, res) => {
-    utils.log(`IP: ${utils.color.green(req.ip)}\treq: status`)
     res.send(cachedStatus)
   })
 
   app.get('/history', (req, res) => {
-    utils.log(`IP: ${utils.color.green(req.ip)}\treq: history`)
     res.send(cachedHistory)
   })
 
