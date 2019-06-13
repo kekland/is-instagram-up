@@ -66,7 +66,7 @@ const bootstrap = async () => {
 
   await initFirebase()
   const token = (await firebase.database().ref().child('params/token').once('value')).toJSON()
-  const messagingPassword = (await firebase().ref().child('params/messaging').once('value')).toJSON()
+  const messagingPassword = (await firebase.database().ref().child('params/messaging').once('value')).toJSON()
   utils.log(`Got service token ${token.slice(0, 6)}...`)
   bot = new VK(token)
   bot.longpoll.start()
