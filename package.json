@@ -25,7 +25,7 @@
     "axios": "^0.19.0",
     "chalk": "^2.4.2",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "firebase-admin": "^8.1.0",
     "level": "^5.0.1",
     "leveldown": "^5.1.0",
